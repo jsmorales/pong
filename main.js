@@ -27,7 +27,7 @@ pelota
 	self.Tablero.prototype = {
 		get elementos(){
 			var elementos = this.barras
-			elementos.push(pelota);
+			elementos.push(this.pelota);
 			//regresa todos los elementos
 			return elementos;
 		}
@@ -48,6 +48,34 @@ pelota
 		this.contexto = canvas.getContext("2d");
 	}
 
+	//modificacion del prototipo de TableroVista
+	self.TableroVista.prototype = {
+		dibujar: function(){
+			for (var i = 0; i < this.tablero.elementos.length; i++) {
+				var el = this.tablero.elementos[i];
+
+				dibujar(this.contexto,el);
+			};
+		}
+	}
+
+	//metodo para dibujar
+	//sele pasa contexto:donde va a dibujar, elemento: que va a dibujar
+	function dibujar(contexto,elemento){
+
+		if (elemento !== null && elemento.hasOwnProperty("tipo")) {
+			//switch para tipo de elemento
+			switch(elemento.tipo) {
+			    case 'rectangle':
+			        contexto.fillRect(elemento.x,elemento.y,elemento.ancho,elemento.largo);
+			    break;    
+			    
+			}
+
+		};
+		
+	}
+
 })();
 
 //modelo de las barras
@@ -62,11 +90,24 @@ pelota
 		this.width = ancho;
 		this.height = alto;
 
+		//que tipo
+		this.tipo = "rectangle";
+
 		//en donde va a estar
 		this.tablero = tablero;
 
 		//se cargan las barras dentro del tablero
 		this.tablero.barras.push(this);
+	}
+
+	self.Barra.prototype = {
+
+		arriba: function(){
+
+		},
+		abajo: function(){
+
+		}
 	}
 
 })();
@@ -85,4 +126,8 @@ function main(){
 	var canvas = document.getElementById('canvas');
 	//se intancia la vista del tablero con el canvas y el tablero instanciado
 	var vista_tablero = new TableroVista(canvas,tablero);
+
+	var barra = new Barra(20,100,40,100,tablero);
+
+	//vista_tablero.dibujar();
 }
