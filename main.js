@@ -26,7 +26,7 @@ pelota
 	//esto permite declarar diferentes
 	self.Tablero.prototype = {
 		get elementos(){
-			var elementos = this.barras
+			var elementos = this.barras;
 			elementos.push(this.pelota);
 			//regresa todos los elementos
 			return elementos;
@@ -48,30 +48,37 @@ pelota
 		this.contexto = canvas.getContext("2d");
 	}
 
+
+
 	//modificacion del prototipo de TableroVista
 	self.TableroVista.prototype = {
 		dibujar: function(){
-			for (var i = 0; i < this.tablero.elementos.length; i++) {
-				var el = this.tablero.elementos[i];
-
-				dibujar(this.contexto,el);
-			};
+						
+			var cant_elementos = this.tablero.elementos.length;		
+			/**/
+			var i = 0;
+			for (i; i < cant_elementos; i++) {
+				//console.log("Cant elementos: "+this.tablero.elementos.length) 
+			    //console.log("Cant i: "+i)
+			    dibujar(this.contexto,this.tablero.elementos[i])
+			}
 		}
 	}
 
 	//metodo para dibujar
 	//sele pasa contexto:donde va a dibujar, elemento: que va a dibujar
 	function dibujar(contexto,elemento){
-
-		if (elemento !== null && elemento.hasOwnProperty("tipo")) {
-			//switch para tipo de elemento
+		console.log(elemento)
+		//console.log(elemento.hasOwnProperty("tipo"))
+		if (elemento !== null) {
+			//console.log("Este elemento no es nulo")
+			//console.log(contexto)
 			switch(elemento.tipo) {
 			    case 'rectangle':
-			        contexto.fillRect(elemento.x,elemento.y,elemento.ancho,elemento.largo);
+			        contexto.fillRect(elemento.x,elemento.y,elemento.width,elemento.height);
 			    break;    
 			    
 			}
-
 		};
 		
 	}
@@ -127,7 +134,9 @@ function main(){
 	//se intancia la vista del tablero con el canvas y el tablero instanciado
 	var vista_tablero = new TableroVista(canvas,tablero);
 
+	//console.log(vista_tablero)
+
 	var barra = new Barra(20,100,40,100,tablero);
 
-	//vista_tablero.dibujar();
+	vista_tablero.dibujar();
 }
